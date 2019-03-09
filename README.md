@@ -1,3 +1,5 @@
+# Clothes_advisor
+
 > Helps to choose clothes appropriate for the weather.
 
 
@@ -27,7 +29,7 @@ Describe how to install all development dependencies and how to run an automated
 
 ## Meta
 
-Usachova Victoria & Shumakov Maxym –  usachova@ucu.esu.ua
+Usachova Victoria & Shumakov Maxym –  usachova@ucu.edu.ua shumakov@ucu.edu.ua
 
 Distributed under the XYZ license. See ``LICENSE`` for more information.
 
