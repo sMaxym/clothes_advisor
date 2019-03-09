@@ -5,8 +5,8 @@
 
 
 This product help to choose clothes avaible to the user for the trip in a certain area and time.
-Application is using barcode to define a clothes and it's type. Also it provides weather forecast 
-and chat to know about detailed weather condition in certain area.
+Application is using barcode to define a clothes and its type. Also it provides weather forecast 
+and chat to know about detailed weather condition in a certain area.
 
 ## Installation
 
