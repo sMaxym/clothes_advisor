@@ -16,11 +16,11 @@ def get_data_with_wrapper(base_url, options, APIKEY):
     owm = pyowm.OWM(APIKEY)
     observation = owm.weather_at_coords(options[0], options[1])
     w = observation.get_weather()
-    print(w.get_wind())
+    print(w.get_temperature(unit='celsius'))
 
 
 if __name__ == "__main__":
     url = "http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&APPID={}"
-    options = (35, 139)
+    options = (49.824973, 24.176674)
     APIKEY = "160058a98508149e10affb7930083705"
     get_data_with_wrapper(url, options, APIKEY)
