@@ -17,6 +17,3 @@ class Weather:
         weather_data = self.get_weather_by_location(coords)
         temperature = weather_data.get_temperature(unit='celsius')
         return temperature['temp']
-
-    
-

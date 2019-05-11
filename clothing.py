@@ -26,3 +26,6 @@ class Clothing:
         self.rain_suitable = rain_suitable
         self.amount_at_once = amount_at_once
         self.warmness = warmness
+
+    def __str__(self):
+        return str(self.warmness)
