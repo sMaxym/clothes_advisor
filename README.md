@@ -25,7 +25,7 @@ Output: list of clothes
 │      settings.py <br/>
 │      urls.py <br/>
 │      wsgi.py <br/>
-│      __init__.py <br/>
+│      \__init__.py <br/>
 │           <br/>
 ├───firstapp <br/>
 │   │   admin.py <br/>
@@ -33,16 +33,14 @@ Output: list of clothes
 │   │   models.py <br/>
 │   │   tests.py <br/>
 │   │   views.py <br/>
-│   │   __init__.py <br/>
+│   │   \__init__.py <br/>
 │   │   <br/>
 │   └───migrations <br/>
-│          __init__.py <br/>
+│          \__init__.py <br/>
 │     <br/>
 ├───static <br/>
-│     … <br/>
 │       <br/>
 └───templates <br/>
-    	… <br/>
 
 
 # Usage example
