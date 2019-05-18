@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+    <ul>
+        {% for element in clothes %}
+            <li>{{ element }}</li>
+        {% endfor %}
+
+    </ul>
+    
+{% endblock %}

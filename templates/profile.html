@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block extra_head %}
+    <script src="{% static "jquery-3.4.1.min.js" %}"></script>
+    <link rel="stylesheet" href="{% static "profile_style.css" %}" />
+{% endblock %}
+{% block body %}
+    <div>
+      <strong>Menu:</strong>
+      <ul>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+        <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+        <p>{{ user.email }}</p>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div>
+        <div class="col-sm-6 col-sm-offset-3">
+            <h3 class="text-center">Choose your wardrobe</h3>
+                <div class="well" style="max-height: 300px;overflow: auto;">
+                    <form id="my_form">
+                        {% csrf_token %}
+            	        <ul id="check-list-box" class="list-group checked-list-box">
+                            <li class="list-group-item"><input type="checkbox" id="option1" value="1"> T-shirt</li>
+                            <li class="list-group-item"><input type="checkbox" id="option2" value="2"> Sweater</li>
+                            <li class="list-group-item"><input type="checkbox" id="option3" value="3"> Jacket</li>
+                            <li class="list-group-item"><input type="checkbox" id="option4" value="4"> Warm pants</li>
+                            <li class="list-group-item"><input type="checkbox" id="option5" value="5"> Jeans</li>
+                            <li class="list-group-item"><input type="checkbox" id="option6" value="6"> Shorts</li>
+                            <li class="list-group-item"><input type="checkbox" id="option7" value="7"> Slippers</li>
+                            <li class="list-group-item"><input type="checkbox" id="option8" value="8"> Shoes</li>
+                            <li class="list-group-item"><input type="checkbox" id="option9" value="9"> Sneakers</li>
+                        </ul>
+                        <button class="btn btn-primary col-xs-12"
+                        type="submit" id="button">Change wardrobe</button>
+                    </form>
+                <br />
+
+                </div>
+
+            <pre id="display-json"></pre>
+        </div>
+        <div class="col-sm-6 col-sm-offset-3">
+            <h3 class="text-center">Your wardrobe</h3>
+            <ul>
+                {% for el in clothes %}
+                    <li class="list-group-item">{{ el }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        $(document).on('submit', '#my_form', function (e) {
+            e.preventDefault();
+            console.log('kk');
+            var arr = [];
+            for(var i = 1; i < 10; i++){
+                element_id = 'option' + i;
+                element = document.getElementById(element_id);
+                if (element.checked)
+                    arr.push(element.value);
+            }
+            console.log('f');
+            $.ajax({
+                type: "POST",
+                url: "http://127.0.0.1:8000/change_wardrobe/",
+                data: { 'checkboxes': JSON.stringify(arr),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(result){
+                    alert("Success");
+                }
+            });
+        });
+
+    </script>
+
+{% endblock %}
+

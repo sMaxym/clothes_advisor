@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
+
+        <title>{% block head_title %}{% endblock %}</title>
+        {% block extra_head %}
+        {% endblock %}
+        <style>
+            /* Set the size of the div element that contains the map */
+            #map {
+                height: 400px;  /* The height is 400 pixels */
+                width: 80%;  /* The width is the width of the web page */
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 50px;
+           }
+            button{
+                margin-left: 200px;
+            }
+        </style>
+    </head>
+    <body id="b">
+        {% block body %}
+
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="#">Weather app</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                            <a class="nav-link" href="http://127.0.0.1:8000/profile/">My profile</a>
+                        {%  else %}
+                            <a class="nav-link" href="http://127.0.0.1:8000/accounts/login/">My profile</a>
+                        {%  endif %}
+                    </li>
+                </ul>
+            {% if not user.is_authenticated %}
+                <form class="form-inline mt-2 mt-md-0">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    <a href = 'http://127.0.0.1:8000/accounts/login/'>Login</a></button>
+                </form>
+            {% endif %}
+            </div>
+        </nav>
+
+
+        <div>
+            <strong>Menu:</strong>
+            {% if user.is_authenticated %}
+                <div>You are registered</div>
+            {% else %}
+                <div>You are not registered</div>
+            {% endif %}
+        </div>
+        {% block content %}
+        {% endblock %}
+        {% endblock %}
+        {% block extra_body %}
+        {% endblock %}
+
+
+        <!--The div element for the map -->
+        <div id="map"></div>
+            <button id = 'Go' type="button" class="btn btn-info btn-lg" onclick="get_weather()">Go!</button>
+
+    <script>
+        // Initialize and add the map
+        var map;
+        var from_LanLng = null, to_LanLng = null;
+
+        function initMap() {
+          var directionsDisplay = new google.maps.DirectionsRenderer;
+          var directionsService = new google.maps.DirectionsService;
+          var myLatlng = new google.maps.LatLng(49.81756130000001, 24.0233323);
+          var myOptions = {
+            zoom: 14,
+            center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          }
+
+          map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+          google.maps.event.addListener(map, 'click', function(event) {
+            placeMarker(event.latLng, directionsService, directionsDisplay);
+          });
+
+          directionsDisplay.setMap(map);
+          function Handler(){
+            calculateAndDisplayRoute(directionsService, directionsDisplay)
+          }
+          document.getElementById('Go').addEventListener('click', Handler);
+        }
+
+        function placeMarker(location) {
+          if (from_LanLng == null)
+              from_LanLng = location;
+          else {
+              to_LanLng = location;
+          }
+          var marker = new google.maps.Marker({
+              position: location,
+              map: map
+          });
+        }
+
+        function get_weather() {
+              // 1. Создаём новый объект XMLHttpRequest
+              var xhr = new XMLHttpRequest();
+
+              // 2. Конфигурируем его: GET-запрос на URL
+              xhr.open('GET', 'http://127.0.0.1:8000/getweather/' + from_LanLng + '/'
+                  + to_LanLng + '/', false);
+
+              // 3. Отсылаем запрос
+              xhr.send();
+
+              // 4. Если код ответа сервера не 200, то это ошибка
+                if (xhr.status != 200) {
+                    // обработать ошибку
+                    alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+                }
+                else {
+                    // вывести результат
+                    document.getElementById("b").innerHTML = xhr.responseText;
+                    alert( xhr.responseText ); // responseText -- текст ответа.
+                }
+
+        }
+
+        function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+                console.log(from_LanLng);
+                directionsService.route({
+                  origin: from_LanLng,
+                  destination: to_LanLng,
+                  travelMode: 'WALKING'
+                }, function(response, status) {
+                  if (status === 'OK') {
+                    directionsDisplay.setDirections(response);
+                  } else {
+                    window.alert('Directions request failed due to ' + status);
+                  }
+                });
+              }
+
+    </script>
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVfcHKE8xYy98PU-wvAI43z6wzejf9K5I&callback=initMap">
+    </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+  </body>
+  <!-- FOOTER -->
+  <hr class="featurette-divider">
+  <footer class="container">
+    <p class="float-right"><a href="#">Back to top</a></p>
+    <p>&copy; 2017-2018 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+  </footer>
+
+</html>

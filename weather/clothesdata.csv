@@ -1,0 +1,9 @@
+name, type, temperature_range, rain_suitable, amount_at_once, warmness
+T-shirt, chest, -40 40, True, 2, 2
+Sweater, chest, -40 10, True, 2, 5
+Warm pants, legs, -40 25, True, 1, 7
+Jeans, legs, -10 25, True, 1, 5
+Shorts, legs, 23 40, True, 1, 2
+Slippers, foot, 25 40, False, 1, 1
+Shoes, foot, -40 7, True, 1, 7
+Sneakers, foot, 10 25, True, 1, 3

@@ -1,0 +1,1 @@
+b'{\n   "geocoded_waypoints" : [ {}, {} ],\n   "routes" : [],\n   "status" : "ZERO_RESULTS"\n}\n'
