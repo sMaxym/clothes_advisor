@@ -5,8 +5,6 @@
 
 
 This product help to choose clothes avaible to the user for the trip in a certain area and time.
-Application is using barcode to define a clothes and its type. Also it provides weather forecast 
-and chat to know about detailed weather condition in a certain area.
 
 # Manual
 User should choose all location of visiting on the map and click "Go" button. If user is authorized, program will choose apropriate clothes from user's wardrobe, which she/he could change on the profile page, and redirected to page with list of clothes. If not, then program will choose clothes from all possible. User can authorize by creating new account with email verification or by existing google account. Also on the profile page user can add photos of his clothes or choose from list.
